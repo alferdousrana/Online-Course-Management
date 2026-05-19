@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .statistics {
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .stat-box {
+            background-color: #4CAF50; /* গ্রিন কালার, পরিবর্তন করতে পারেন */
+            color: white;
+            padding: 15px;
+            border-radius: 10px; /* কোণগুলো রাউন্ড */
+            text-align: center;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .stat-box:hover {
+            transform: scale(1.05); /* হোভারে বড় হবে */
+        }
+        /* বিভিন্ন রঙ যোগ করা */
+        .stat-box:nth-child(1) { background-color: #4CAF50; } /* Total Users */
+        .stat-box:nth-child(2) { background-color: #2196F3; } /* Total Teachers */
+        .stat-box:nth-child(3) { background-color: #FF9800; } /* Total Students */
+        .stat-box:nth-child(4) { background-color: #F44336; } /* Pending Enrollments */
+        .stat-box:nth-child(5) { background-color: #9C27B0; } /* Approved Enrollments */
+        .stat-box:nth-child(6) { background-color: #2c7402; } /* Total Courses */
+        .stat-box:nth-child(7) { background-color: #3F51B5; } /* Total Course Categories */
+        .stat-box:nth-child(8) { background-color: #009688; } /* Total Modules */
+        .stat-box:nth-child(9) { background-color: #98054f; } /* Total Course Categories */
+        .stat-box:nth-child(10) { background-color: #9b7d05; } /* Total Modules */
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+      
+    </style>
+</head>
+
+<body>
+    <h1>Platform Statistics</h1>
+    <div class="statistics">
+        <div class="stats-container">
+            <div class="stat-box">
+                <strong>Total Turnover:</strong> {{ total_turnover }} ৳
+            </div>
+            
+            <div class="stat-box">
+                <strong>This Month's Turnover:</strong> {{ current_month_turnover }} ৳
+            </div>
+            
+            <div class="stat-box" onclick="window.open('/admin/main/customuser/', '_blank')">
+                <strong>Total Users:</strong> {{ total_users }}
+            </div>
+            
+            <div class="stat-box" onclick="window.open('/admin/main/customuser/?role__exact=TEACHER', '_blank')">
+                <strong>Total Teachers:</strong> {{ total_teachers }}
+            </div>
+            
+            <div class="stat-box" onclick="window.open('/admin/main/customuser/?role__exact=STUDENT', '_blank')">
+                <strong>Total Students:</strong> {{ total_students }}
+            </div>
+            
+            <!-- <div class="stat-box" onclick="window.open('/admin/main/enrollment/?status__exact=PENDING', '_blank')">
+                <strong>Pending Enrollments:</strong> {{ total_pending_enrollments }}
+            </div> -->
+            
+            <div class="stat-box" onclick="window.open('/admin/main/enrollment/?status__exact=APPROVED', '_blank')">
+                <strong>Approved Enrollments:</strong> {{ total_approved_enrollments }}
+            </div>
+            
+            <div class="stat-box" onclick="window.open('/admin/main/course/', '_blank')">
+                <strong>Total Courses:</strong> {{ total_courses }}
+            </div>
+            
+            <div class="stat-box" onclick="window.open('/admin/main/coursecategory/', '_blank')">
+                <strong>Total Course Categories:</strong> {{ total_course_categories }}
+            </div>
+            
+            <div class="stat-box" onclick="window.open('/admin/main/module/', '_blank')">
+                <strong>Total Modules:</strong> {{ total_modules }}      </div>
+        </div>
+    </div>
+
+    <h2>API Endpoints Overview</h2>
+    <table>
+        <tr>
+            <th>Endpoint</th>
+            <th>Description</th>
+            <th>Method</th>
+            <th>Permission</th>
+        </tr>
+        <tr>
+            <td>/api/users/</td>
+            <td>List and create users</td>
+            <td>GET, POST</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/users/&lt;int:pk&gt;/</td>
+            <td>Retrieve, update, or delete a user</td>
+            <td>GET, PUT, DELETE</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/teachers/</td>
+            <td>List all teachers</td>
+            <td>GET</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/teachers/&lt;int:pk&gt;/</td>
+            <td>Retrieve teacher details</td>
+            <td>GET</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/profile/</td>
+            <td>Get user profile</td>
+            <td>GET</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/profile/update/</td>
+            <td>Update user profile</td>
+            <td>PUT</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/teacher/courses/</td>
+            <td>List courses created by the authenticated teacher</td>
+            <td>GET</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/student/courses/</td>
+            <td>List enrolled courses for the authenticated student</td>
+            <td>GET</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/teacher/&lt;int:pk&gt;/courses/</td>
+            <td>List courses by a specific teacher</td>
+            <td>GET</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/categories/</td>
+            <td>List all course categories</td>
+            <td>GET</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/courses/create/</td>
+            <td>Create a new course</td>
+            <td>POST</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/courses/</td>
+            <td>List all courses</td>
+            <td>GET</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/courses/category/&lt;int:category_id&gt;/</td>
+            <td>List courses by category</td>
+            <td>GET</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/courses/&lt;int:pk&gt;/</td>
+            <td>Retrieve course details</td>
+            <td>GET</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/courses/latest/</td>
+            <td>List latest 4 courses</td>
+            <td>GET</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/courses/&lt;int:pk&gt;/update/</td>
+            <td>Update a course</td>
+            <td>PUT</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/courses/&lt;int:pk&gt;/delete/</td>
+            <td>Delete a course</td>
+            <td>DELETE</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/change-password/</td>
+            <td>Change user password</td>
+            <td>PUT</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/courses/free/</td>
+            <td>List all free courses</td>
+            <td>GET</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/teachers/popular/</td>
+            <td>List top 4 popular teachers</td>
+            <td>GET</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/contact-us/</td>
+            <td>Create a contact us entry</td>
+            <td>POST</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/hero-images/</td>
+            <td>List all hero images</td>
+            <td>GET</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/enroll/</td>
+            <td>Enroll in a course</td>
+            <td>POST</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/enrollment-status/&lt;int:course_id&gt;/</td>
+            <td>Check enrollment status for a course</td>
+            <td>GET</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/enrollments/&lt;int:pk&gt;/delete/</td>
+            <td>Delete an enrollment</td>
+            <td>DELETE</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/testimonials/</td>
+            <td>List all testimonials</td>
+            <td>GET</td>
+            <td>AllowAny</td>
+        </tr>
+        <tr>
+            <td>/api/module-progress/</td>
+            <td>List module progress for authenticated student</td>
+            <td>GET</td>
+            <td>IsAuthenticated</td>
+        </tr>
+        <tr>
+            <td>/api/module-progress/&lt;int:module_id&gt;/</td>
+            <td>Update module progress</td>
+            <td>POST</td>
+            <td>IsAuthenticated</td>
+        </tr>
+    </table>
+    
+</body>
+
+</html>

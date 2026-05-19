@@ -1,0 +1,22 @@
+.custom-link {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    display: block;
+    transition: transform 0.2s ease;
+  }
+  
+  .custom-list-item:hover .custom-link {
+    transform: scale(1.05);
+  }
+
+  .section-heading {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid #0d6efd; /* Bootstrap primary color */
+    border-radius: 20px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  
+  
